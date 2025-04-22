@@ -1,5 +1,5 @@
-% Toy model of unemployment
-% gauthier@vermandel.fr
+% Model of unemployment
+% Derived from "Toy Model of Unemployment" by gauthier@vermandel.fr
 
 %----------------------------------------------------------------
 % 0. Housekeeping (close all graphic windows)
@@ -198,4 +198,4 @@ end;
 resid(1);
 check;
 
-stoch_simul(irf=30,order=1) y c i pi r u x ;
+stoch_simul(irf=30,order=1) y c i pi r u x ; %test test
