@@ -195,7 +195,7 @@ shocks;
 	var eta_r;	stderr 0.01;
 end;
 	
-resid(1);
+resid;
 check;
 
-stoch_simul(irf=30,order=1) y c i pi r u x ; %test test
+stoch_simul(irf=30,order=1) y c i pi r u x ;
