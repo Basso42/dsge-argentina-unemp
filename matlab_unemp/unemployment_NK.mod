@@ -18,7 +18,7 @@ var e_a e_g e_c e_m e_i e_r e_t;
 varexo eta_a eta_g eta_c eta_m eta_i eta_r eta_t;
  
 parameters beta delta alpha sigmaC sigmaL delta_N chi phi gy b  Gam eta gamma epsilon kappa rho phi_y phi_pi xi
-			tau0 y0 sig theta1 theta2 varphi A xi piss  rho_a rho_g rho_c rho_m rho_i rho_r rho_t;
+			tau0 y0 sig theta1 theta2 varphi A piss  rho_a rho_g rho_c rho_m rho_i rho_r rho_t;
             
             
 %----------------------------------------------------------------
@@ -195,7 +195,7 @@ shocks;
 	var eta_r;	stderr 0.01;
 end;
 	
-resid(1);
+resid;
 check;
 
-stoch_simul(irf=30,order=1) y c i pi r u x ; %test test
+stoch_simul(irf=30,order=1) y c i pi r u x ;
