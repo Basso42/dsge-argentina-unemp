@@ -1,0 +1,4 @@
+# Unwanted files
+*.log
+*.mat
+.DS_Store
