@@ -1,0 +1,112 @@
+Starting Dynare (version 6.2).
+Calling Dynare with arguments: none
+Starting preprocessing of the model file ... 
+Found 30 equation(s). 
+Evaluating expressions... 
+Computing static model derivatives (order 1). 
+Normalizing the static model... 
+Finding the optimal block decomposition of the static model... 
+10 block(s) found: 
+  9 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 17 equation(s) 
+                                 and 17 feedback variable(s). 
+Computing dynamic model derivatives (order 1). 
+Normalizing the dynamic model... 
+Finding the optimal block decomposition of the dynamic model... 
+8 block(s) found: 
+  7 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 18 equation(s) 
+                                 and 17 feedback variable(s). 
+Preprocessing completed. 
+Preprocessing time: 0h00m00s.
+[Warning: Some of the parameters have no value (chi, b, Gam, A, rho_t) when using stoch_simul. If these parameters
+are not initialized in a steadystate file or a steady_state_model-block, Dynare may not be able to solve the
+model. Note that simul, perfect_foresight_setup, and perfect_foresight_solver do not automatically call the
+steady state file.] 
+
+MODEL SUMMARY
+
+  Number of variables:         30
+  Number of stochastic shocks: 6
+  Number of state variables:   12
+  Number of jumpers:           9
+  Number of static variables:  12
+
+
+MATRIX OF COVARIANCE OF EXOGENOUS SHOCKS
+Variables       eta_a     eta_g     eta_c     eta_m     eta_i     eta_r
+eta_a        0.000900  0.000000  0.000000  0.000000  0.000000  0.000000
+eta_g        0.000000  0.000400  0.000000  0.000000  0.000000  0.000000
+eta_c        0.000000  0.000000  0.000100  0.000000  0.000000  0.000000
+eta_m        0.000000  0.000000  0.000000  0.000100  0.000000  0.000000
+eta_i        0.000000  0.000000  0.000000  0.000000  0.000100  0.000000
+eta_r        0.000000  0.000000  0.000000  0.000000  0.000000  0.002500
+
+POLICY AND TRANSITION FUNCTIONS
+                                   y               c               i              pi               r               u               x
+Constant                   25.000000       18.163136        1.086864       20.000000       21.052632        0.060000        1.566667
+n(-1)                      -2.875443        0.018691        0.000865       -0.001094       -0.019463        0.127196      -20.441165
+k(-1)                      -0.024637        0.005238       -0.015154       -0.000174       -0.000181        0.004905       -0.209843
+r(-1)                      -0.250108       -0.213628       -0.003280       -0.000096        0.198307        0.011064       -0.473276
+e_a(-1)                    -5.014624       -0.625447       -0.570814       -0.067111       -0.039434        1.272412      -54.430940
+e_g(-1)                     5.301564       -0.700437        0.073245        0.000173        0.035730       -0.234516       10.032083
+e_c(-1)                    17.507822       14.941862        0.241882        0.000572        0.117996       -0.774464       33.129835
+e_m(-1)                     0.061229        0.029276        0.023825        0.002771        0.000646       -0.002708        0.115862
+e_r(-1)                   -17.577123      -14.916648       -0.327199       -0.009459        8.301842        0.777529      -33.260972
+i(-1)                       0.975399       -0.016383        0.862303       -0.000471        0.006531       -0.043147        1.845735
+e_i(-1)                     0.462901       -0.186714        0.588167       -0.006069        0.002607       -0.020477        0.875941
+eta_a                      -5.278551       -0.658365       -0.600857       -0.070643       -0.041510        1.339381      -57.295727
+eta_g                       5.580593       -0.737303        0.077100        0.000182        0.037611       -0.246859       10.560088
+eta_c                      18.429287       15.728276        0.254613        0.000603        0.124206       -0.815225       34.873510
+eta_m                       0.064451        0.030817        0.025079        0.002917        0.000680       -0.002851        0.121960
+eta_i                       0.487264       -0.196541        0.619123       -0.006388        0.002745       -0.021554        0.922043
+eta_r                     -43.942808      -37.291620       -0.817996       -0.023648       20.754604        1.943823      -83.152431
+
+
+THEORETICAL MOMENTS
+VARIABLE         MEAN  STD. DEV.   VARIANCE
+y             25.0000     2.5305     6.4036
+c             18.1631     2.2144     4.9034
+i              1.0869     0.2512     0.0631
+pi            20.0000     0.0064     0.0000
+r             21.0526     1.2518     1.5670
+u              0.0600     0.1578     0.0249
+x              1.5667     5.3756    28.8972
+
+
+
+VARIANCE DECOMPOSITION (in percent)
+       eta_a   eta_g   eta_c   eta_m   eta_i   eta_r
+y       1.68    1.67    4.56    0.00    0.06   92.02
+c       0.11    0.04    5.19    0.00    0.00   94.66
+i      65.34    0.48    1.30    0.01    6.94   25.92
+pi     95.57    0.01    0.02    0.02    0.38    4.01
+r       0.00    0.00    0.00    0.00    0.00  100.00
+u      50.80    0.77    2.11    0.00    0.12   46.20
+x      37.51    0.57    1.56    0.00    0.08   60.28
+
+
+
+MATRIX OF CORRELATIONS
+Variables          y        c        i       pi        r        u        x
+y             1.0000   0.9785   0.4133   0.3010  -0.9458  -0.7809   0.8080
+c             0.9785   1.0000   0.3337   0.2200  -0.9697  -0.7116   0.7251
+i             0.4133   0.3337   1.0000   0.6469  -0.3186  -0.6858   0.5419
+pi            0.3010   0.2200   0.6469   1.0000  -0.1907  -0.8290   0.7316
+r            -0.9458  -0.9697  -0.3186  -0.1907   1.0000   0.6678  -0.6725
+u            -0.7809  -0.7116  -0.6858  -0.8290   0.6678   1.0000  -0.9488
+x             0.8080   0.7251   0.5419   0.7316  -0.6725  -0.9488   1.0000
+
+
+
+COEFFICIENTS OF AUTOCORRELATION
+Order          1       2       3       4       5
+y         0.4630  0.2622  0.1586  0.1112  0.0868
+c         0.5238  0.2562  0.1329  0.0794  0.0563
+i         0.9720  0.9127  0.8360  0.7500  0.6593
+pi        0.9187  0.8579  0.8049  0.7574  0.7136
+r         0.5552  0.2527  0.1070  0.0438  0.0176
+u         0.6965  0.5693  0.4906  0.4412  0.4044
+x         0.3654  0.3515  0.3099  0.2862  0.2654
+Total computing time : 0h00m21s
+Note: warning(s) encountered in MATLAB/Octave code
