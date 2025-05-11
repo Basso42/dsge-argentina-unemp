@@ -12,7 +12,7 @@ close all;
 % 1. Defining variables
 %----------------------------------------------------------------
 
-var rr c n u w y k i lb mc pi r z x v_H v_P g gy_obs gc_obs gi_obs pi_obs r_obs u_obs varrho;
+var rr c n u w y k i lb mc pi r z x v_H v_P g gy_obs gc_obs pi_obs r_obs u_obs varrho;
 var e_a e_g e_c e_m e_i e_r;
 
 
@@ -109,8 +109,6 @@ model;
 	gy_obs = log(y/y(-1));
 	[name='measurement consumption']
 	gc_obs = log(c/c(-1));
-	[name='measurement investment']
-	gi_obs = log(i/i(-1));
 	[name='measurement inflation']
 	pi_obs = pi - steady_state(pi);
 	[name='measurement interest rate']
@@ -160,63 +158,64 @@ steady_state_model;
 	e_m 	= 1;
 	e_i 	= 1;
 	e_r 	= 1;
-	gy_obs = 0; gc_obs = 0; gi_obs = 0; pi_obs = 0; r_obs = 0; u_obs = 0; 
+	gy_obs = 0; gc_obs = 0; pi_obs = 0; r_obs = 0; u_obs = 0; 
 end;
 
 
-varobs gy_obs pi_obs r_obs gc_obs gi_obs;
+varobs gc_obs r_obs u_obs;
 
 estimated_params;
-//	PARAM NAME,		INITVAL,	LB,		UB,		PRIOR_SHAPE,		PRIOR_P1,		PRIOR_P2,		PRIOR_P3,		PRIOR_P4,		JSCALE
-	stderr eta_g,   	,			,		,		INV_GAMMA_PDF,		.01,			2;
-	rho_g,				.92,    	,		,		beta_pdf,			.5,				0.2;
-	stderr eta_p,   	,			,		,		INV_GAMMA_PDF,		.01,			2;
-	rho_p,				.92,    	,		,		beta_pdf,			.5,				0.2;
-	stderr eta_r,   	,			,		,		INV_GAMMA_PDF,		.01,			2;
-	rho_r,				.5,    		,		,		beta_pdf,			.5,				0.2;
-	stderr eta_c,   	,			,		,		INV_GAMMA_PDF,		.01,			2;
-	rho_c,				.96,    		,		,		beta_pdf,			.5,				0.2;
-	stderr eta_i,   	,			,		,		INV_GAMMA_PDF,		.01,			2;
-	rho_i,				.9,    		,		,		beta_pdf,			.5,				0.2;
+//	PARAM NAME,		INITVAL,	LB,		UB,		PRIOR_SHAPE,		PRIOR_P1,		PRIOR_P2
+	stderr eta_g,   		,			,		,		INV_GAMMA_PDF,		0.05,		2;
+	rho_g,					0.75,    	,		,		beta_pdf,			0.6,		0.2;
 	
+	stderr eta_r,   		,			,		,		INV_GAMMA_PDF,		0.1,		2;
+	rho_r,					0.3,    	,		,		beta_pdf,			0.5,		0.3;
 
-	sigmaC,				2,    		,		,		normal_pdf,			1.5,				.35;
-	sigmaH,				0.8,   	 	,		,		gamma_pdf,			2,				0.5;
-	hh,					.34,    		,		,		beta_pdf,			.75,			0.1;
-	kappa,				6,    		,		,		gamma_pdf,			4,				1.5;
-	xi,					106,    	0,		,		gamma_pdf,			100,				15;
-	rho,				.45,    	,		,		beta_pdf,			.75,				0.1;
-	phi_pi,				1.8,    	,		,		gamma_pdf,			1.5,				0.25;
-	phi_y,				0.05,    	,		,		gamma_pdf,			0.12,				0.05;
-	phi_dy,				0.02,    	,		,		normal_pdf,			0.12,				0.05;
-%	alpha,				0.25,    	,		,		beta_pdf,			0.3,				.05;
+	stderr eta_c,   		,			,		,		INV_GAMMA_PDF,		0.05,		2;
+	rho_c,					0.85,    	,		,		beta_pdf,			0.5,		0.2;
+
+	stderr eta_i,   		,			,		,		INV_GAMMA_PDF,		0.1,		2;
+	rho_i,					0.75,    	,		,		beta_pdf,			0.5,		0.2;
+
+	sigmaC,					3,    		,		,		normal_pdf,			2.5,		0.5;
+	
+	kappa,					8,    		,		,		gamma_pdf,			6,			2;
+	xi,						150,    	0,		,		gamma_pdf,			130,		20;
+	rho,					0.4,    	,		,		beta_pdf,			0.6,		0.1;
+	phi_pi,					1.2,    	,		,		gamma_pdf,			1.0,		0.3;
+	phi_y,					0.08,    	,		,		gamma_pdf,			0.1,		0.05;
+	
+	alpha,					0.25,    	,		,		beta_pdf,			0.3,		.05;
 
 end;
 
 
-%%% estimation of the model
-estimation(datafile=myobs,	% your datafile, must be in your current folder
-first_obs=1,				% First data of the sample
-mode_compute=4,				% optimization algo, keep it to 4
+
+%%% estimation of the model for Argentina 1989-1995
+estimation(datafile=obs_dbnomics,
+first_obs=1,				
+mode_compute=4,				% optimization algo
 mh_replic=5000,				% number of sample in Metropolis-Hastings
-mh_jscale=0.5,				% adjust this to have an acceptance rate between 0.2 and 0.3
+mh_jscale=0.5,				% acceptance rate between 0.2 and 0.3
 prefilter=1,				% remove the mean in the data
 lik_init=2,					
 mh_nblocks=1,				% number of mcmc chains
 forecast=8					% forecasts horizon
-) gy_obs pi_obs r_obs gc_obs gi_obs;
+) gc_obs r_obs u_obs;
 
 
 
+% load estimated parameters
+fn = fieldnames(oo_.posterior_mean.parameters);
+for ix = 1:size(fn,1)
+	set_param_value(fn{ix},eval(['oo_.posterior_mean.parameters.' fn{ix} ]))
+end
+% load estimated shocks
+fx = fieldnames(oo_.posterior_mean.shocks_std);
+for ix = 1:size(fx,1)
+	idx = strmatch(fx{ix},M_.exo_names,'exact');
+	M_.Sigma_e(idx,idx) = eval(['oo_.posterior_mean.shocks_std.' fx{ix}])^2;
+end
 
-%%% SIMULATIONS
-shocks;
-	%var eta_a;	stderr 0.03;
-	%var eta_g;	stderr 0.02;
-	%var eta_c;	stderr 0.01;
-	%var eta_m;	stderr 0.01;
-	%var eta_i;	stderr 0.01;
-	var eta_r;	stderr 0.05;
-end;
-
-stoch_simul(irf=30,order=1) y c i pi r u x ;
+stoch_simul(irf=30,conditional_variance_decomposition=[1,4,10,100],order=1) gy_obs gc_obs pi_obs r_obs u_obs ;
