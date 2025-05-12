@@ -2,6 +2,10 @@
 % Inspired by "Toy Model of Unemployment" by gauthier@vermandel.fr
 % Revised version for Argentina 1989, free of environmental consideration.
 
+
+%To call functions
+addpath('../functions');
+
 %----------------------------------------------------------------
 % 0. Housekeeping (close all graphic windows)
 %----------------------------------------------------------------
@@ -125,6 +129,11 @@ model;
     log(e_r) = rho_r*log(e_r(-1))+eta_r;
 end;
 
+%----------------------------------------------------------------
+% 3bis. Call and generate datafile
+%----------------------------------------------------------------
+disp('Generating datafile...');
+data_argentina;
     
 %----------------------------------------------------------------
 % 4. Computation
