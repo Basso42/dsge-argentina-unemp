@@ -12,7 +12,7 @@ close all;
 % 1. Defining variables
 %----------------------------------------------------------------
 
-var rr c n u w y k i lb mc pi r z x v_H v_P g gy_obs gc_obs pi_obs r_obs u_obs varrho;
+var rr c n u w y k i lb mc pi r z x v_H v_P g gy_obs_2003 gc_obs_2003 pi_obs_2003 r_obs_2003 u_obs_2003 varrho;
 var e_a e_g e_c e_m e_i e_r;
 
 
@@ -106,15 +106,15 @@ model;
 	
 	%% Observable variables 
 	[name='measurement GDP']
-	gy_obs = log(y/y(-1));
+	gy_obs_2003 = log(y/y(-1));
 	[name='measurement consumption']
-	gc_obs = log(c/c(-1));
+	gc_obs_2003 = log(c/c(-1));
 	[name='measurement inflation']
-	pi_obs = pi - steady_state(pi);
+	pi_obs_2003 = pi - steady_state(pi);
 	[name='measurement interest rate']
-	r_obs  = r  - steady_state(r);
+	r_obs_2003  = r  - steady_state(r);
 	[name='measurement unemployment']
-	u_obs  = u  - steady_state(u);
+	u_obs_2003  = u  - steady_state(u);
 	
 	[name='shocks']
 	log(e_a) = rho_a*log(e_a(-1))+eta_a;
@@ -158,16 +158,12 @@ steady_state_model;
 	e_m 	= 1;
 	e_i 	= 1;
 	e_r 	= 1;
-	gy_obs = 0; gc_obs = 0; pi_obs = 0; r_obs = 0; u_obs = 0; 
+	gy_obs_2003 = 0; gc_obs_2003 = 0; pi_obs_2003 = 0; r_obs_2003 = 0; u_obs_2003 = 0; 
 end;
 
 
-varobs gy_obs pi_obs r_obs gc_obs u_obs;
+varobs gy_obs_2003 pi_obs_2003 r_obs_2003 gc_obs_2003 u_obs_2003;
 
-estimated_params_init(use_calibration);
-end;
-
-check;
 
 estimated_params;
 //	PARAM NAME,		INITVAL,	LB,		UB,		PRIOR_SHAPE,		PRIOR_P1,		PRIOR_P2,		PRIOR_P3,		PRIOR_P4,		JSCALE
@@ -180,9 +176,12 @@ estimated_params;
 	stderr eta_c,   	,		,		,		INV_GAMMA_PDF,		    0.05,			2;
 	rho_c,				,    	,		,		beta_pdf,			    .5,				0.2;
 
-    %stderr eta_a,  0.01, , , inv_gamma_pdf, 0.01, 2;
-    %stderr eta_m,  0.01, , , inv_gamma_pdf, 0.01, 2;
-    %stderr eta_i,  0.01, , , inv_gamma_pdf, 0.01, 2;
+    stderr eta_a,  0.01, , , inv_gamma_pdf, 0.01, 2;
+    rho_a,				,    	,		,		beta_pdf,			    .5,				0.2;
+    stderr eta_m,  0.01, , , inv_gamma_pdf, 0.01, 2;
+    rho_m,				,    	,		,		beta_pdf,			    .5,				0.2;
+    stderr eta_i,  0.01, , , inv_gamma_pdf, 0.01, 2;
+    rho_i,				,    	,		,		beta_pdf,			    .5,				0.2;
 	
 	sigmaC,				2,    		,		,		normal_pdf,			1.5,				.35;
 	kappa,				6,    		,		,		gamma_pdf,			4,				1.5;
@@ -196,16 +195,16 @@ end;
 
 
 %%% estimation of the model
-estimation(datafile=obs_argentina,
+estimation(datafile=obs_argentina_2000_2005,
 first_obs=1,				
 mode_compute=6,				
-mh_replic=5000,				% number of sample in Metropolis-Hastings
+mh_replic=20000,				% number of sample in Metropolis-Hastings
 mh_jscale=0.5,				% adjust this to have an acceptance rate between 0.2 and 0.3
 prefilter=1,				
 lik_init=2,					
 mh_nblocks=1,				% number of mcmc chains
 forecast=8					% forecasts horizon
-) gy_obs pi_obs r_obs gc_obs u_obs;
+) gy_obs_2003 pi_obs_2003 r_obs_2003 gc_obs_2003 u_obs_2003;
 
 
 
@@ -221,5 +220,5 @@ for ix = 1:size(fx,1)
 	M_.Sigma_e(idx,idx) = eval(['oo_.posterior_mean.shocks_std.' fx{ix}])^2;
 end
 
-stoch_simul(irf=30,conditional_variance_decomposition=[1,4,10,100],order=1) gy_obs pi_obs r_obs gc_obs u_obs;
+stoch_simul(irf=30,conditional_variance_decomposition=[1,4,10,100],order=1) gy_obs_2003 pi_obs_2003 r_obs_2003 gc_obs_2003 u_obs_2003;
 

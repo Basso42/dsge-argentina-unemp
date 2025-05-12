@@ -128,11 +128,11 @@ output_final 	= output_final(idx,:);
 T				= T(idx);
 
 % Taking observed values - ALL
-gy_obs  = output_final(:,2); % GDP
-pi_obs  = output_final(:,3); % Inflation
-u_obs   = output_final(:,4); % Unemployment
-gc_obs  = output_final(:,5); % Consumption Growth
-r_obs   = output_final(:,6); % Interest Rates
+gy_obs  = output_final(:,2)/100; % GDP
+pi_obs  = output_final(:,3)/100; % Inflation
+u_obs   = output_final(:,4)/100; % Unemployment
+gc_obs  = output_final(:,5)/100; % Consumption Growth
+r_obs   = output_final(:,6)/100 % Interest Rates
 T = T(1:end);
 
 % Taking observed values - 1988-1995
