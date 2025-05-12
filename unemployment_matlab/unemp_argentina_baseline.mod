@@ -37,12 +37,12 @@ sigmaL 	= 2; 		% Elasticity of labor
 epsilon = 10;		% Elasticity between goods
 rho 	= 0.2;		% Monetary policy smoothing
 phi_y	= 0.01;		% Monetary policy reaction to output
-phi_pi	= 0.1;		% Monetary policy reaction to inflation
+phi_pi	= 1.5;		% Monetary policy reaction to inflation
 xi 		= 80;		% Adjustment costs on prices
 kappa	= 4;		% adjustment costs on investment
 gamma	= .07;		% unemployment insurance as % of real wage
-piss	= 20;	    % steady state inflation in Argentina
-y0      = 25;
+piss	= 1.20;	    % steady state inflation in Argentina
+y0      = 11.5;
 
 % autoregressive roots parameters
 rho_a	= 0.95;
@@ -167,8 +167,8 @@ end;
 %%% SIMULATIONS
 shocks;
 	%var eta_a;	stderr 0.03;
-	%var eta_g;	stderr 0.02;
-	%var eta_c;	stderr 0.01;
+	var eta_g;	stderr 0.02;
+	var eta_c;	stderr 0.01;
 	%var eta_m;	stderr 0.01;
 	%var eta_i;	stderr 0.01;
 	var eta_r;	stderr 0.05;

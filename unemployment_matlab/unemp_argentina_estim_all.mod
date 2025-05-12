@@ -1,6 +1,6 @@
 % Model of unemployment for Argentina (Basso F. and Stizi N.)
 % Inspired by "Toy Model of Unemployment" by gauthier@vermandel.fr
-% Revised version for Argentina 1989-1995, free of environmental consideration.
+% Revised version for Argentina 1989, free of environmental consideration.
 
 %----------------------------------------------------------------
 % 0. Housekeeping (close all graphic windows)
@@ -12,19 +12,14 @@ close all;
 % 1. Defining variables
 %----------------------------------------------------------------
 
-var rr c n u w y k i lb mc pi r z x v_H v_P g 
-gy_obs ${\Delta log(Y_{t})}$ (long_name='Output growth'), 
-gc_obs ${\Delta log(C_{t})}$ (long_name='Consumption growth'), 
-pi_obs ${\pi_{t}}$ (long_name='Inflation'),
-r_obs ${R_{t}}$ (long_name='Interest rate'),
-u_obs ${u_{t}}$ (long_name='Unemployment rate'),  varrho;
+var rr c n u w y k i lb mc pi r z x v_H v_P g gy_obs gc_obs pi_obs r_obs u_obs varrho;
 var e_a e_g e_c e_m e_i e_r;
 
 
 varexo eta_a eta_g eta_c eta_m eta_i eta_r;
  
 parameters beta delta alpha sigmaC sigmaL delta_N chi phi gy b  Gam eta gamma epsilon kappa rho phi_y phi_pi xi
-			y0 A  piss  rho_a rho_g rho_c rho_m rho_i rho_r;
+			y0 A  piss  rho_a rho_g rho_c rho_m rho_i rho_r rho_t;
             
             
 %----------------------------------------------------------------
@@ -42,12 +37,12 @@ sigmaL 	= 2; 		% Elasticity of labor
 epsilon = 10;		% Elasticity between goods
 rho 	= 0.2;		% Monetary policy smoothing
 phi_y	= 0.01;		% Monetary policy reaction to output
-phi_pi	= 0.1;		% Monetary policy reaction to inflation
+phi_pi	= 1.5;		% Monetary policy reaction to inflation
 xi 		= 80;		% Adjustment costs on prices
 kappa	= 4;		% adjustment costs on investment
 gamma	= .07;		% unemployment insurance as % of real wage
 piss	= 1.20;	    % steady state inflation in Argentina
-y0      = 25;
+y0      = 11.5;
 
 % autoregressive roots parameters
 rho_a	= 0.95;
@@ -55,7 +50,7 @@ rho_g	= 0.95;
 rho_c	= 0.95;
 rho_m  	= 0.95;
 rho_i	= 0.95;
-rho_r	= 0.95;
+rho_r	= 0.40;
 
 %----------------------------------------------------------------
 % 3. Model
@@ -110,7 +105,7 @@ model;
 	
 	
 	%% Observable variables 
-    [name='measurement GDP']
+	[name='measurement GDP']
 	gy_obs = log(y/y(-1));
 	[name='measurement consumption']
 	gc_obs = log(c/c(-1));
@@ -120,7 +115,6 @@ model;
 	r_obs  = r  - steady_state(r);
 	[name='measurement unemployment']
 	u_obs  = u  - steady_state(u);
-	
 	
 	[name='shocks']
 	log(e_a) = rho_a*log(e_a(-1))+eta_a;
@@ -168,54 +162,52 @@ steady_state_model;
 end;
 
 
-varobs gy_obs pi_obs u_obs gc_obs r_obs;
+varobs gy_obs pi_obs r_obs gc_obs u_obs;
+
+estimated_params_init(use_calibration);
+end;
+
+check;
 
 estimated_params;
 //	PARAM NAME,		INITVAL,	LB,		UB,		PRIOR_SHAPE,		PRIOR_P1,		PRIOR_P2,		PRIOR_P3,		PRIOR_P4,		JSCALE
-	stderr eta_g,   		,			,		,		INV_GAMMA_PDF,		0.05,		2;
-	rho_g,					0.75,    	,		,		beta_pdf,			0.6,		0.2;
+	stderr eta_g,   	0.01,			,		,		INV_GAMMA_PDF,		.01,			2;
+	rho_g,				.92,    	,		,		beta_pdf,			.5,				0.2;
 
-	stderr eta_r,   		,			,		,		INV_GAMMA_PDF,		0.1,		2;
-	rho_r,					0.3,    	,		,		beta_pdf,			0.5,		0.2;
+	stderr eta_r,   	0.01,			,		,		INV_GAMMA_PDF,		.01,			2;
+	rho_r,				.5,    		,		,		beta_pdf,			.5,				0.2;
 
-	stderr eta_c,   		,			,		,		INV_GAMMA_PDF,		0.05,		2;
-	rho_c,					0.85,    	,		,		beta_pdf,			0.5,		0.2;
+	stderr eta_c,   	0.01,			,		,		INV_GAMMA_PDF,		.01,			2;
+	rho_c,				.96,    		,		,		beta_pdf,			.5,				0.2;
 
-	stderr eta_i,   		,			,		,		INV_GAMMA_PDF,		0.1,		2;
-	rho_i,					0.75,    	,		,		beta_pdf,			0.5,		0.2;
+    stderr eta_a,  0.01, , , inv_gamma_pdf, 0.01, 2;
+    stderr eta_m,  0.01, , , inv_gamma_pdf, 0.01, 2;
+    stderr eta_i,  0.01, , , inv_gamma_pdf, 0.01, 2;
+	
+	sigmaC,				2,    		,		,		normal_pdf,			1.5,				.35;
+	kappa,				6,    		,		,		gamma_pdf,			4,				1.5;
+	xi,					106,    	0,		,		gamma_pdf,			100,				15;
+	rho,				.45,    	,		,		beta_pdf,			.75,				0.1;
+	phi_pi,				1.8,    	,		,		gamma_pdf,			1.5,				0.25;
+	phi_y,				0.05,    	,		,		gamma_pdf,			0.12,				0.05;
+%	alpha,				0.25,    	,		,		beta_pdf,			0.3,				.05;
 
-	stderr eta_a,   		,			,		,		INV_GAMMA_PDF,		0.05,		2;
-	rho_a,					0.95,    	,		,		beta_pdf,			0.5,		0.2;
-
-	stderr eta_m,   		,			,		,		INV_GAMMA_PDF,		0.05,		2;
-	rho_m,					0.95,    	,		,		beta_pdf,			0.5,		0.2;
-
-	% Other structural parameters
-	sigmaC,					3,    		,		,		normal_pdf,			2.5,		0.5;
-	kappa,					8,    		,		,		gamma_pdf,			6,			2;
-	xi,						150,    	0,		,		gamma_pdf,			130,		20;
-	rho,					0.4,    	,		,		beta_pdf,			0.6,		0.1;
-	phi_pi,					1.2,    	,		,		gamma_pdf,			1.0,		0.3;
-	phi_y,					0.08,    	,		,		gamma_pdf,			0.1,		0.05;
-	alpha,					0.25,    	,		,		beta_pdf,			0.3,		.05;
 end;
 
 
+%%% estimation of the model
+estimation(datafile=obs_argentina,
+first_obs=1,				
+mode_compute=4,				
+mh_replic=5000,				% number of sample in Metropolis-Hastings
+mh_jscale=0.5,				% adjust this to have an acceptance rate between 0.2 and 0.3
+prefilter=1,				
+lik_init=2,					
+mh_nblocks=1,				% number of mcmc chains
+forecast=8					% forecasts horizon
+) gy_obs pi_obs r_obs gc_obs u_obs;
 
-%%% estimation of the model for Argentina 1987-2024
-estimation(
-    datafile=obs_argentina,
-    first_obs=1,
-    mode_compute=4,     % optimisation algorithm
-    mode_check,
-    mh_replic=5000,     % number of sample in Metropolis-Hastings
-    mh_jscale=0.5,      % acceptance rate between 0.2 and 0.3
-    prefilter=1,        % remove the mean in the data
-    lik_init=2,         % number of mcmc chains
-    mh_nblocks=1,
-    forecast=8,         % forecast horizon
-    prior_trunc=1e-8
-) gy_obs pi_obs u_obs gc_obs r_obs;
+
 
 % load estimated parameters
 fn = fieldnames(oo_.posterior_mean.parameters);
@@ -229,5 +221,5 @@ for ix = 1:size(fx,1)
 	M_.Sigma_e(idx,idx) = eval(['oo_.posterior_mean.shocks_std.' fx{ix}])^2;
 end
 
+stoch_simul(irf=30,conditional_variance_decomposition=[1,4,10,100],order=1) gy_obs pi_obs r_obs gc_obs u_obs;
 
-stoch_simul(irf=30,conditional_variance_decomposition=[1,4,10,100],order=1) gy_obs pi_obs u_obs gc_obs r_obs ;
