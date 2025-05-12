@@ -2,10 +2,6 @@
 % Inspired by "Toy Model of Unemployment" by gauthier@vermandel.fr
 % Revised version for Argentina 1989, free of environmental consideration.
 
-
-%To call functions
-addpath('../functions');
-
 %----------------------------------------------------------------
 % 0. Housekeeping (close all graphic windows)
 %----------------------------------------------------------------
@@ -134,7 +130,10 @@ end;
 %----------------------------------------------------------------
 disp('Generating datafile...');
 data_argentina;
-    
+disp('Datafile generated...');
+addpath('../data');
+
+
 %----------------------------------------------------------------
 % 4. Computation
 %----------------------------------------------------------------
@@ -205,7 +204,7 @@ end;
 
 
 %%% estimation of the model
-estimation(datafile=obs_argentina,
+estimation(datafile='../data/obs_argentina.mat',
 first_obs=1,				
 mode_compute=4,				
 mh_replic=5000,				% number of sample in Metropolis-Hastings
