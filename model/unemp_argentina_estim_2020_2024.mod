@@ -225,15 +225,14 @@ stoch_simul(irf=30,conditional_variance_decomposition=[1,4,10,100],order=1) gy_o
 %% Saving the figures in the results
 currentFolder = pwd;
 parentFolder = fileparts(currentFolder);
-targetFolder = fullfile(parentFolder, 'results/estim_2000_2005')
+targetFolder = fullfile(parentFolder, 'results')
 
 allFigs = findall(0, 'Type', 'figure');
 
 for i = 1:length(allFigs)
     fig = allFigs(i);
-    num = i;
     figName = get(fig, 'Name');  % Get the name property
     disp([figName]);
-    saveas(fig, fullfile(targetFolder, sprintf('%d_%s.png', num, figName)));
-    print('-depsc', fullfile(targetFolder, sprintf('%d_%s.eps', num, figName)));
+    saveas(fig, fullfile(output_folder, [figName, '.png']));
+    print('-depsc', fullfile(targetFolder, sprintf('.eps')));
 end

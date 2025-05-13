@@ -179,7 +179,7 @@ T_2015 = T_2015(1:end);
 %% Saving
 currentFolder = pwd;
 parentFolder = fileparts(currentFolder);
-targetFolder_data = fullfile(parentFolder, 'unemployment_matlab')
+targetFolder_data = fullfile(parentFolder, 'data')
 targetFolder_figure = fullfile(parentFolder, 'results')
 
 % save into obs_argentina.mat
