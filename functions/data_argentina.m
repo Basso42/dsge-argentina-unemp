@@ -98,36 +98,13 @@ output_final = table2array(output_final)
 disp(output_final)
 
 %% Spliting the datasets of the three inflation episodes
-% 1988-1995
-year_range_idx_1 = output_final(:,1) >= 1988 & output_final(:,1) <= 1995;
-output_final_1988_1995 = output_final(year_range_idx_1, :);
-T_1989 = output_final_1988_1995(:,1)
-idx = find(~isnan(sum(output_final_1988_1995(:,1:end),2)));
-output_final_1988_1995 	= output_final_1988_1995(idx,:);
-T_1989 = T_1989(idx);
 % 2000 - 2005
-year_range_idx_2 = output_final(:,1) >= 2000 & output_final(:,1) <= 2005;
-output_final_2000_2005 = output_final(year_range_idx_2, :);
+year_range_idx_2023 = output_final(:,1) >= 2000 & output_final(:,1) <= 2005;
+output_final_2000_2005 = output_final(year_range_idx_2023, :);
 T_2003 = output_final_2000_2005(:,1)
 idx = find(~isnan(sum(output_final_2000_2005(:,1:end),2)));
 output_final_2000_2005 	= output_final_2000_2005(idx,:);
 T_2003 = T_2003(idx);
-% 2020 - 2024
-year_range_idx_3 = output_final(:,1) >= 2020 & output_final(:,1) <= 2024;
-output_final_2020_2024 = output_final(year_range_idx_3, :);
-T_2022 = output_final_2020_2024(:,1)
-idx = find(~isnan(sum(output_final_2020_2024(:,1:end),2)));
-output_final_2020_2024 	= output_final_2020_2024(idx,:);
-T_2022 = T_2022(idx);
-
-%Trying 2000-2015
-year_range_idx_4 = output_final(:,1) >= 2000 & output_final(:,1) <= 2015;
-output_final_2000_2015 = output_final(year_range_idx_3, :);
-T_2015 = output_final_2000_2015(:,1)
-idx = find(~isnan(sum(output_final_2000_2015(:,1:end),2)));
-output_final_2000_2015 	= output_final_2000_2015(idx,:);
-T_2015 = T_2015(idx);
-
 
 
 %% Fitting the data to expected format
@@ -144,14 +121,6 @@ gc_obs  = output_final(:,5); % Consumption Growth
 r_obs   = output_final(:,6); % Interest Rates
 T = T(1:end);
 
-% Taking observed values - 1988-1995
-gy_obs_1989  = output_final_1988_1995(:,2); % GDP
-pi_obs_1989 = output_final_1988_1995(:,3); % Inflation
-u_obs_1989  = output_final_1988_1995(:,4); % Unemployment
-gc_obs_1989  = output_final_1988_1995(:,5); % Consumption Growth
-r_obs_1989  = output_final_1988_1995(:,6); % Interest Rates
-T_1989 = T_1989(1:end);
-
 % Taking observed values - 2000 - 2005
 gy_obs_2003  = output_final_2000_2005(:,2); % GDP
 pi_obs_2003 = output_final_2000_2005(:,3); % Inflation
@@ -160,38 +129,17 @@ gc_obs_2003  = output_final_2000_2005(:,5); % Consumption Growth
 r_obs_2003  = output_final_2000_2005(:,6); % Interest Rates
 T_2003 = T_2003(1:end);
 
-% Taking observed values - 2020 - 2024
-gy_obs_2022  = output_final_2020_2024(:,2); % GDP
-pi_obs_2022 = output_final_2020_2024(:,3); % Inflation
-u_obs_2022  = output_final_2020_2024(:,4); % Unemployment
-gc_obs_2022  = output_final_2020_2024(:,5); % Consumption Growth
-r_obs_2022  = output_final_2020_2024(:,6); % Interest Rates
-T_2022 = T_2022(1:end);
-
-% Trying
-gy_obs_2015  = output_final_2000_2015(:,2); % GDP
-pi_obs_2015 = output_final_2000_2015(:,3); % Inflation
-u_obs_2015  = output_final_2000_2015(:,4); % Unemployment
-gc_obs_2015  = output_final_2000_2015(:,5); % Consumption Growth
-r_obs_2015  = output_final_2000_2015(:,6); % Interest Rates
-T_2015 = T_2015(1:end);
-
 %% Saving
 currentFolder = pwd;
 parentFolder = fileparts(currentFolder);
-targetFolder_data = fullfile(parentFolder, 'data')
+targetFolder_data = fullfile(parentFolder, 'model')
 targetFolder_figure = fullfile(parentFolder, 'results')
 
 % save into obs_argentina.mat
 savePath_data = fullfile(targetFolder_data, 'obs_argentina.mat');
 save(savePath_data, 'gy_obs', 'pi_obs', 'u_obs', 'gc_obs', 'r_obs', 'T');
 
-save(fullfile(targetFolder_data, 'obs_argentina_1988_1995.mat'), 'gy_obs_1989', 'pi_obs_1989', 'u_obs_1989', 'gc_obs_1989', 'r_obs_1989', 'T_1989');
 save(fullfile(targetFolder_data, 'obs_argentina_2000_2005.mat'), 'gy_obs_2003', 'pi_obs_2003', 'u_obs_2003', 'gc_obs_2003', 'r_obs_2003', 'T_2003');
-save(fullfile(targetFolder_data, 'obs_argentina_2020_2024.mat'), 'gy_obs_2022', 'pi_obs_2022', 'u_obs_2022', 'gc_obs_2022', 'r_obs_2022', 'T_2022');
-
-save(fullfile(targetFolder_data, 'obs_argentina_2000_2015.mat'), 'gy_obs_2015', 'pi_obs_2015', 'u_obs_2015', 'gc_obs_2015', 'r_obs_2015', 'T_2015');
-
 
 % Figure
 figure('Name','Data Series Visualization');

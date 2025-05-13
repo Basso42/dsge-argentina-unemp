@@ -166,11 +166,11 @@ end;
 
 %%% SIMULATIONS
 shocks;
-	%var eta_a;	stderr 0.03;
+	var eta_a;	stderr 0.03;
 	var eta_g;	stderr 0.02;
 	var eta_c;	stderr 0.01;
-	%var eta_m;	stderr 0.01;
-	%var eta_i;	stderr 0.01;
+	var eta_m;	stderr 0.01;
+	var eta_i;	stderr 0.01;
 	var eta_r;	stderr 0.05;
 end;
 

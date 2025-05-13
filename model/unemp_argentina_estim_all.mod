@@ -183,7 +183,7 @@ estimated_params;
     stderr eta_i,  0.01, , , inv_gamma_pdf, 0.01, 2;
     rho_i,				,    	,		,		beta_pdf,			    .5,				0.2;
 	
-	%sigmaC,				2,    		,		,		normal_pdf,			1.5,				.35;
+	sigmaC,				2,    		,		,		normal_pdf,			1.5,				.35;
 	%kappa,				6,    		,		,		gamma_pdf,			4,				1.5;
 	%xi,					106,    	0,		,		gamma_pdf,			100,				15;
 	%rho,				,    	    ,		,		beta_pdf,			.45,				0.11;
@@ -197,7 +197,7 @@ end;
 
 %%% estimation of the model
 estimation(datafile=obs_argentina,
-first_obs=1,				
+first_obs=13,			
 mode_compute=6,				
 mh_replic=5000,				% number of sample in Metropolis-Hastings
 mh_jscale=0.5,				% adjust this to have an acceptance rate between 0.2 and 0.3
@@ -223,3 +223,18 @@ end
 
 stoch_simul(irf=30,conditional_variance_decomposition=[1,4,10,100],order=1) gy_obs pi_obs r_obs gc_obs u_obs;
 
+%% Saving the figures in the results
+currentFolder = pwd;
+parentFolder = fileparts(currentFolder);
+targetFolder = fullfile(parentFolder, 'results/estim_all')
+
+allFigs = findall(0, 'Type', 'figure');
+
+for i = 1:length(allFigs)
+    fig = allFigs(i);
+    num = i;
+    figName = get(fig, 'Name');  % Get the name property
+    disp([figName]);
+    saveas(fig, fullfile(targetFolder, sprintf('%d_%s.png', num, figName)));
+    print('-depsc', fullfile(targetFolder, sprintf('%d_%s.eps', num, figName)));
+end
