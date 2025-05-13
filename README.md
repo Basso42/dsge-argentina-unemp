@@ -67,7 +67,7 @@ click CDB "https://github.com/basso42/dsge-argentina-unemp/blob/main/functions/c
 click CWB "https://github.com/basso42/dsge-argentina-unemp/blob/main/functions/call_worldbank.m"
 click DAG "https://github.com/basso42/dsge-argentina-unemp/blob/main/functions/data_argentina.m"
 click DATA "https://github.com/basso42/dsge-argentina-unemp/tree/main/data/"
-click DREADME "https://github.com/basso42/dsge-argentina-unemp/blob/main/data/ReadMe.md"
+click DREADME "https://github.com/basso42/dsge-argentina-unemp/blob/main/data/readme.md"
 click M1 "https://github.com/basso42/dsge-argentina-unemp/blob/main/model/unemp_argentina_estim_2000_2005.mod"
 click M2 "https://github.com/basso42/dsge-argentina-unemp/blob/main/model/unemp_argentina_estim_2020_2024.mod"
 click FIG "https://github.com/basso42/dsge-argentina-unemp/blob/main/results/data_series_fig.eps"
