@@ -1,6 +1,6 @@
 % Model of unemployment for Argentina (Basso F. and Stizi N.)
 % Inspired by "Toy Model of Unemployment" by gauthier@vermandel.fr
-% Revised version for Argentina 1989, free of environmental consideration.
+% Revised version for Argentina, free of environmental consideration.
 
 %----------------------------------------------------------------
 % 0. Housekeeping (close all graphic windows)
@@ -222,3 +222,18 @@ end
 
 stoch_simul(irf=30,conditional_variance_decomposition=[1,4,10,100],order=1) gy_obs_2003 pi_obs_2003 r_obs_2003 gc_obs_2003 u_obs_2003;
 
+%% Saving the figures in the results
+currentFolder = pwd;
+parentFolder = fileparts(currentFolder);
+targetFolder = fullfile(parentFolder, 'results/estim_2000_2005')
+
+allFigs = findall(0, 'Type', 'figure');
+
+for i = 1:length(allFigs)
+    fig = allFigs(i);
+    num = i;
+    figName = get(fig, 'Name');  % Get the name property
+    disp([figName]);
+    saveas(fig, fullfile(targetFolder, sprintf('%d_%s.png', num, figName)));
+    print('-depsc', fullfile(targetFolder, sprintf('%d_%s.eps', num, figName)));
+end

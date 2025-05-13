@@ -1,6 +1,6 @@
 % Model of unemployment for Argentina (Basso F. and Stizi N.)
 % Inspired by "Toy Model of Unemployment" by gauthier@vermandel.fr
-% Revised version for Argentina 1989, free of environmental consideration.
+% Revised version for Argentina, free of environmental consideration.
 
 %----------------------------------------------------------------
 % 0. Housekeeping (close all graphic windows)
@@ -12,7 +12,7 @@ close all;
 % 1. Defining variables
 %----------------------------------------------------------------
 
-var rr c n u w y k i lb mc pi r z x v_H v_P g gy_obs_2022 gc_obs_2022 pi_obs_2022 r_obs_2022 u_obs_2022 varrho;
+var rr c n u w y k i lb mc pi r z x v_H v_P g gy_obs_2003 gc_obs_2003 pi_obs_2003 r_obs_2003 u_obs_2003 varrho;
 var e_a e_g e_c e_m e_i e_r;
 
 
@@ -106,15 +106,15 @@ model;
 	
 	%% Observable variables 
 	[name='measurement GDP']
-	gy_obs_2022 = log(y/y(-1));
+	gy_obs_2003 = log(y/y(-1));
 	[name='measurement consumption']
-	gc_obs_2022 = log(c/c(-1));
+	gc_obs_2003 = log(c/c(-1));
 	[name='measurement inflation']
-	pi_obs_2022 = pi - steady_state(pi);
+	pi_obs_2003 = pi - steady_state(pi);
 	[name='measurement interest rate']
-	r_obs_2022  = r  - steady_state(r);
+	r_obs_2003  = r  - steady_state(r);
 	[name='measurement unemployment']
-	u_obs_2022  = u  - steady_state(u);
+	u_obs_2003  = u  - steady_state(u);
 	
 	[name='shocks']
 	log(e_a) = rho_a*log(e_a(-1))+eta_a;
@@ -158,11 +158,11 @@ steady_state_model;
 	e_m 	= 1;
 	e_i 	= 1;
 	e_r 	= 1;
-	gy_obs_2022 = 0; gc_obs_2022 = 0; pi_obs_2022 = 0; r_obs_2022 = 0; u_obs_2022 = 0; 
+	gy_obs_2003 = 0; gc_obs_2003 = 0; pi_obs_2003 = 0; r_obs_2003 = 0; u_obs_2003 = 0; 
 end;
 
 
-varobs gy_obs_2022 pi_obs_2022 r_obs_2022 gc_obs_2022 u_obs_2022;
+varobs gy_obs_2003 pi_obs_2003 r_obs_2003 gc_obs_2003 u_obs_2003;
 
 
 estimated_params;
@@ -195,7 +195,7 @@ end;
 
 
 %%% estimation of the model
-estimation(datafile=obs_argentina_2020_2024,
+estimation(datafile=obs_argentina_2000_2005,
 first_obs=1,				
 mode_compute=6,				
 mh_replic=20000,				% number of sample in Metropolis-Hastings
@@ -204,7 +204,7 @@ prefilter=1,
 lik_init=2,					
 mh_nblocks=1,				% number of mcmc chains
 forecast=8					% forecasts horizon
-) gy_obs_2022 pi_obs_2022 r_obs_2022 gc_obs_2022 u_obs_2022;
+) gy_obs_2003 pi_obs_2003 r_obs_2003 gc_obs_2003 u_obs_2003;
 
 
 
@@ -220,5 +220,19 @@ for ix = 1:size(fx,1)
 	M_.Sigma_e(idx,idx) = eval(['oo_.posterior_mean.shocks_std.' fx{ix}])^2;
 end
 
-stoch_simul(irf=30,conditional_variance_decomposition=[1,4,10,100],order=1) gy_obs_2022 pi_obs_2022 r_obs_2022 gc_obs_2022 u_obs_2022;
+stoch_simul(irf=30,conditional_variance_decomposition=[1,4,10,100],order=1) gy_obs_2003 pi_obs_2003 r_obs_2003 gc_obs_2003 u_obs_2003;
 
+%% Saving the figures in the results
+currentFolder = pwd;
+parentFolder = fileparts(currentFolder);
+targetFolder = fullfile(parentFolder, 'results')
+
+allFigs = findall(0, 'Type', 'figure');
+
+for i = 1:length(allFigs)
+    fig = allFigs(i);
+    figName = get(fig, 'Name');  % Get the name property
+    disp([figName]);
+    saveas(fig, fullfile(output_folder, [figName, '.png']));
+    print('-depsc', fullfile(targetFolder, sprintf('.eps')));
+end

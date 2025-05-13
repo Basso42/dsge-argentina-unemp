@@ -164,10 +164,6 @@ end;
 
 varobs gy_obs pi_obs r_obs gc_obs u_obs;
 
-estimated_params_init(use_calibration);
-end;
-
-check;
 
 estimated_params;
 //	PARAM NAME,		INITVAL,	LB,		UB,		PRIOR_SHAPE,		PRIOR_P1,		PRIOR_P2,		PRIOR_P3,		PRIOR_P4,		JSCALE
@@ -180,19 +176,23 @@ estimated_params;
 	stderr eta_c,   	,		,		,		INV_GAMMA_PDF,		    0.05,			2;
 	rho_c,				,    	,		,		beta_pdf,			    .5,				0.2;
 
-    %stderr eta_a,  0.01, , , inv_gamma_pdf, 0.01, 2;
-    %stderr eta_m,  0.01, , , inv_gamma_pdf, 0.01, 2;
-    %stderr eta_i,  0.01, , , inv_gamma_pdf, 0.01, 2;
+    stderr eta_a,  0.01, , , inv_gamma_pdf, 0.01, 2;
+    rho_a,				,    	,		,		beta_pdf,			    .5,				0.2;
+    stderr eta_m,  0.01, , , inv_gamma_pdf, 0.01, 2;
+    rho_m,				,    	,		,		beta_pdf,			    .5,				0.2;
+    stderr eta_i,  0.01, , , inv_gamma_pdf, 0.01, 2;
+    rho_i,				,    	,		,		beta_pdf,			    .5,				0.2;
 	
-	sigmaC,				2,    		,		,		normal_pdf,			1.5,				.35;
-	kappa,				6,    		,		,		gamma_pdf,			4,				1.5;
-	xi,					106,    	0,		,		gamma_pdf,			100,				15;
-	rho,				,    	    ,		,		beta_pdf,			.45,				0.11;
-	phi_pi,				1.8,    	,		,		gamma_pdf,			1.5,				0.25;
-	phi_y,				0.05,    	,		,		gamma_pdf,			0.12,				0.05;
+	%sigmaC,				2,    		,		,		normal_pdf,			1.5,				.35;
+	%kappa,				6,    		,		,		gamma_pdf,			4,				1.5;
+	%xi,					106,    	0,		,		gamma_pdf,			100,				15;
+	%rho,				,    	    ,		,		beta_pdf,			.45,				0.11;
+	%phi_pi,				1.8,    	,		,		gamma_pdf,			1.5,				0.25;
+	%phi_y,				0.05,    	,		,		gamma_pdf,			0.12,				0.05;
 %	alpha,				0.25,    	,		,		beta_pdf,			0.3,				.05;
 
 end;
+
 
 
 %%% estimation of the model

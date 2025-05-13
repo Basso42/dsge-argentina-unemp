@@ -120,6 +120,15 @@ idx = find(~isnan(sum(output_final_2020_2024(:,1:end),2)));
 output_final_2020_2024 	= output_final_2020_2024(idx,:);
 T_2022 = T_2022(idx);
 
+%Trying 2000-2015
+year_range_idx_4 = output_final(:,1) >= 2000 & output_final(:,1) <= 2015;
+output_final_2000_2015 = output_final(year_range_idx_3, :);
+T_2015 = output_final_2000_2015(:,1)
+idx = find(~isnan(sum(output_final_2000_2015(:,1:end),2)));
+output_final_2000_2015 	= output_final_2000_2015(idx,:);
+T_2015 = T_2015(idx);
+
+
 
 %% Fitting the data to expected format
 T               = output_final(:,1)
@@ -128,11 +137,11 @@ output_final 	= output_final(idx,:);
 T				= T(idx);
 
 % Taking observed values - ALL
-gy_obs  = output_final(:,2)/100; % GDP
-pi_obs  = output_final(:,3)/100; % Inflation
-u_obs   = output_final(:,4)/100; % Unemployment
-gc_obs  = output_final(:,5)/100; % Consumption Growth
-r_obs   = output_final(:,6)/100 % Interest Rates
+gy_obs  = output_final(:,2); % GDP
+pi_obs  = output_final(:,3); % Inflation
+u_obs   = output_final(:,4); % Unemployment
+gc_obs  = output_final(:,5); % Consumption Growth
+r_obs   = output_final(:,6); % Interest Rates
 T = T(1:end);
 
 % Taking observed values - 1988-1995
@@ -159,6 +168,13 @@ gc_obs_2022  = output_final_2020_2024(:,5); % Consumption Growth
 r_obs_2022  = output_final_2020_2024(:,6); % Interest Rates
 T_2022 = T_2022(1:end);
 
+% Trying
+gy_obs_2015  = output_final_2000_2015(:,2); % GDP
+pi_obs_2015 = output_final_2000_2015(:,3); % Inflation
+u_obs_2015  = output_final_2000_2015(:,4); % Unemployment
+gc_obs_2015  = output_final_2000_2015(:,5); % Consumption Growth
+r_obs_2015  = output_final_2000_2015(:,6); % Interest Rates
+T_2015 = T_2015(1:end);
 
 %% Saving
 currentFolder = pwd;
@@ -173,6 +189,8 @@ save(savePath_data, 'gy_obs', 'pi_obs', 'u_obs', 'gc_obs', 'r_obs', 'T');
 save(fullfile(targetFolder_data, 'obs_argentina_1988_1995.mat'), 'gy_obs_1989', 'pi_obs_1989', 'u_obs_1989', 'gc_obs_1989', 'r_obs_1989', 'T_1989');
 save(fullfile(targetFolder_data, 'obs_argentina_2000_2005.mat'), 'gy_obs_2003', 'pi_obs_2003', 'u_obs_2003', 'gc_obs_2003', 'r_obs_2003', 'T_2003');
 save(fullfile(targetFolder_data, 'obs_argentina_2020_2024.mat'), 'gy_obs_2022', 'pi_obs_2022', 'u_obs_2022', 'gc_obs_2022', 'r_obs_2022', 'T_2022');
+
+save(fullfile(targetFolder_data, 'obs_argentina_2000_2015.mat'), 'gy_obs_2015', 'pi_obs_2015', 'u_obs_2015', 'gc_obs_2015', 'r_obs_2015', 'T_2015');
 
 
 % Figure

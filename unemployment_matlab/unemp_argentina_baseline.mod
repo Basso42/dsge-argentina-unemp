@@ -175,3 +175,21 @@ shocks;
 end;
 
 stoch_simul(irf=30,order=1) y c i pi r u x ;
+
+
+%% Saving the figures in the results
+currentFolder = pwd;
+parentFolder = fileparts(currentFolder);
+targetFolder = fullfile(parentFolder, 'results/baseline')
+
+allFigs = findall(0, 'Type', 'figure');
+
+for i = 1:length(allFigs)
+    fig = allFigs(i);
+    num = i;
+    figName = get(fig, 'Name');  % Get the name property
+    disp([figName]);
+    saveas(fig, fullfile(targetFolder, sprintf('%d_%s.png', num, figName)));
+    print('-depsc', fullfile(targetFolder, sprintf('%d_%s.eps', num, figName)));
+end
+
