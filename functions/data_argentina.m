@@ -133,7 +133,7 @@ T_2003 = T_2003(1:end);
 currentFolder = pwd;
 parentFolder = fileparts(currentFolder);
 targetFolder_data = fullfile(parentFolder, 'model')
-targetFolder_figure = fullfile(parentFolder, 'results')
+targetFolder_figure = fullfile(parentFolder, 'results/data')
 
 % save into obs_argentina.mat
 savePath_data = fullfile(targetFolder_data, 'obs_argentina.mat');
@@ -141,7 +141,7 @@ save(savePath_data, 'gy_obs', 'pi_obs', 'u_obs', 'gc_obs', 'r_obs', 'T');
 
 save(fullfile(targetFolder_data, 'obs_argentina_2000_2005.mat'), 'gy_obs_2003', 'pi_obs_2003', 'u_obs_2003', 'gc_obs_2003', 'r_obs_2003', 'T_2003');
 
-% Figure
+% Figure Full Time Series
 figure('Name','Data Series Visualization');
 subplot(3,2,1)
 plot(T,gy_obs)
@@ -164,8 +164,40 @@ plot(T,r_obs)
 xlim([min(T) max(T)]);
 title('Key MP Rate, (YoY ; %)')
 
-print('-depsc', fullfile(targetFolder_figure, 'data_series_fig.eps'));
+print('-depsc', fullfile(targetFolder_figure, 'data_series_1987_2023.eps'));
 
+% Figure Time Series 2000-2023
+T_sub     = T(T >= 2000);
+gy_sub    = gy_obs(T >= 2000);
+gc_sub    = gc_obs(T >= 2000);
+u_sub     = u_obs(T >= 2000);
+pi_sub    = pi_obs(T >= 2000);
+r_sub     = r_obs(T >= 2000);
+
+figure('Name','Data Series Visualization (2000 - 2023)');
+subplot(3,2,1)
+plot(T_sub, gy_sub)
+xlim([min(T_sub) max(T_sub)]);
+title('GDP Growth (YoY ; %)')
+subplot(3,2,2)
+plot(T_sub, gc_sub)
+xlim([min(T_sub) max(T_sub)]);
+title('Consumption Growth (YoY ; %)')
+subplot(3,2,3)
+plot(T_sub, u_sub)
+xlim([min(T_sub) max(T_sub)]);
+title('Unemployment Rate (YoY ; %)')
+subplot(3,2,4)
+plot(T_sub, pi_sub)
+xlim([min(T_sub) max(T_sub)]);
+title('Inflation Rate, (YoY ; %)')
+subplot(3,2,5)
+plot(T_sub, r_sub)
+xlim([min(T_sub) max(T_sub)]);
+title('Key MP Rate, (YoY ; %)')
+
+% Save figure
+print('-depsc', fullfile(targetFolder_figure, 'data_series_2000_2023.eps'));
 
 
 

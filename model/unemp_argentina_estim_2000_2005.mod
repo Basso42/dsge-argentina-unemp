@@ -1,6 +1,6 @@
 % Model of unemployment for Argentina (Basso F. and Stizi N.)
 % Inspired by "Toy Model of Unemployment" by gauthier@vermandel.fr
-% Revised version for Argentina, free of environmental consideration.
+% Revised version for Argentina 2000-2005, free of environmental consideration.
 
 %----------------------------------------------------------------
 % 0. Housekeeping (close all graphic windows)
@@ -203,7 +203,7 @@ end;
 
 
 %%% estimation of the model
-estimation(datafile='../data/obs_argentina_2000_2005.mat',
+estimation(datafile='obs_argentina_2000_2005.mat',
 first_obs=1,				
 mode_compute=6,				
 mh_replic=20000,				% number of sample in Metropolis-Hastings
@@ -228,20 +228,11 @@ for ix = 1:size(fx,1)
 	M_.Sigma_e(idx,idx) = eval(['oo_.posterior_mean.shocks_std.' fx{ix}])^2;
 end
 
-stoch_simul(irf=30,conditional_variance_decomposition=[1,4,10,100],order=1) gy_obs_2003 pi_obs_2003 r_obs_2003 gc_obs_2003 u_obs_2003;
+stoch_simul(irf=30,conditional_variance_decomposition=[1,4,10,100],order=1, TeX) gy_obs_2003 pi_obs_2003 r_obs_2003 gc_obs_2003 u_obs_2003;
 
-%% Saving the figures in the results
+%% Saving the figures and tables (LaTeX) in the results
 currentFolder = pwd;
 parentFolder = fileparts(currentFolder);
-targetFolder = fullfile(parentFolder, 'results/estim_2000_2005')
-
-allFigs = findall(0, 'Type', 'figure');
-
-for i = 1:length(allFigs)
-    fig = allFigs(i);
-    num = i;
-    figName = get(fig, 'Name');  % Get the name property
-    disp([figName]);
-    saveas(fig, fullfile(targetFolder, sprintf('%d_%s.png', num, figName)));
-    print('-depsc', fullfile(targetFolder, sprintf('%d_%s.eps', num, figName)));
-end
+resultsFolder = fullfile(currentFolder, 'unemp_argentina_baseline')
+targetFolder = fullfile(parentFolder, 'results/estim/estim_2000_2005')
+copyfile(resultsFolder, targetFolder);
