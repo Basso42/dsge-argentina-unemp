@@ -5,11 +5,10 @@ Leveraging Dynare and DBNomics, we developed a DSGE model to study the expected 
 ## Using the repository
 To run the full models and obtain all the results in one click, one can run the file `one_runs_all.m` available in the main folder.
 
-The rest of the repository is organized in five subfolders.
+The rest of the repository is organized in four subfolders.
 - **functions**: contains the data scrapping functions (`call_dbnomics.m` and `call_worldbank.m` that respectively scrap from https://db.nomics.world/ and the World Bank database) and the data set generation that are used in the estimation (`data_argentina.m`)
 - **model**: contains the stochastic simulation of the theoretical model rederived by N. STIZI (`unemp_argentina_baseline`) and the estimations of this model on Argentinan data from 2000 to 2023 (`unemp_argentina_estim_all`) and on the subsample from 2000 to 2005 to analyse the specific high inflation event of 2001-2002 (`unemp_argentina_estim_2000_2005`).
 - **results**: contains the graphs and tables output of the stochastic simulations (baseline and estimates) as LaTeX output.
-- **data**: contains an explaination of the data and data work
 - **documentation**: gives the reference note from Gauthier Vermandel used as a base before rederiving the model and tailoring it to Argentina, free of environmental consideration.
 
 
