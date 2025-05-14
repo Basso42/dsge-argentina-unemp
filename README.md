@@ -65,7 +65,6 @@ WB -->|fetch data| CWB
 CDB -->|store series| DATA
 CWB -->|store series| DATA
 DAG -->|prepare Argentina| DATA
-DATA -->|read input| M1
 DATA -->|read input| M2
 M1 -->|run Dynare| FIG
 M2 -->|run Dynare| FIG
