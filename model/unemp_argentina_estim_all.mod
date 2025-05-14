@@ -227,6 +227,6 @@ stoch_simul(irf=30,conditional_variance_decomposition=[1,4,10,20],order=1, TeX) 
 %% Saving the figures and tables (LaTeX) in the results
 currentFolder = pwd;
 parentFolder = fileparts(currentFolder);
-resultsFolder = fullfile(currentFolder, 'unemp_argentina_baseline')
+resultsFolder = fullfile(currentFolder, 'unemp_argentina_estim_all')
 targetFolder = fullfile(parentFolder, 'results/estim/estim_all')
 copyfile(resultsFolder, targetFolder);
