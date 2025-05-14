@@ -1,1 +1,0 @@
-Folder to store the outputs of the ```functions/data_argentina.m``` script
